@@ -164,6 +164,24 @@ SHOW TABLES;
 SELECT * FROM employee;
 
 
+18 step 18) post man query
+1)get method = http://localhost:8080/api/employees
+
+2)post method = http://localhost:8080/api/employees
+{
+  
+  "name": "Abcdef",
+  "department": "HR",
+  "salary":"500000"
+}
+
+3)delete method just Query therse = http://localhost:8080/api/employees/1
+
+4)put method =http://localhost:8080/api/employees/1
+{
+  "name": "Abdef "
+}
+
 
 
 
