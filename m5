@@ -1,0 +1,125 @@
+module 5 ka hai
+
+
+Q1) Write a program to create a simple Spring Boot application that prints a message.
+                                   or
+Q2 Write a program to demonstrate RESTful Web Services with spring boot.(Product Application)
+Postman: GET, POST, PUT, Delete.
+
+ans will be same for both
+
+
+1 step 1) go on  start.spring.io
+2 step 2) select project > Maven
+3 step 3) select language > Java
+4 step 4) Rest of all jaisa hai waise rhendena 
+5 step 5) Add dependecies 1) Spring Web  
+6 step 6) Click on generate
+7 step 7) Fir vo folder unzip karlena 
+8 step 8) fir vo folder open karlena eclipse mai
+9 step 9) fir vo folder mai folder create krna ProductServiceController.
+10 step 10)  fir vo folder ke andar classes banana 
+
+11 step 11) ProductServiceController.java = 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class ProductServiceController {
+
+    private static Map<String, Product> pcontent = new HashMap<>();
+
+    static {
+        Product honey = new Product();
+        honey.setId("80");
+        honey.setName("Ashwini Kurunthazha");
+        pcontent.put(honey.getId(), honey);
+    }
+
+    // GET all products
+    @RequestMapping(value = "/products")
+    public ResponseEntity<Object> getProduct() {
+        return new ResponseEntity<>(pcontent.values(), HttpStatus.OK);
+    }
+
+    // POST add product
+    @RequestMapping(value = "/products", method = RequestMethod.POST)
+    public ResponseEntity<Object> addProduct(@RequestBody Product product) {
+        pcontent.put(product.getId(), product);
+        return new ResponseEntity<>("Product Added Successfully", HttpStatus.OK);
+    }
+
+    // PUT update product
+    @RequestMapping(value = "/products/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<Object> updateProduct(
+            @PathVariable("id") String id,
+            @RequestBody Product product) {
+
+        pcontent.remove(id);
+        product.setId(id);
+        pcontent.put(id, product);
+
+        return new ResponseEntity<>("Product Updated Successfully", HttpStatus.OK);
+    }
+
+    // DELETE product
+    @RequestMapping(value = "/products/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Object> deleteProduct(@PathVariable("id") String id) {
+        pcontent.remove(id);
+        return new ResponseEntity<>("Product Deleted Successfully", HttpStatus.OK);
+    }
+}
+
+12 step 12) Product.java = 
+public class Product {
+
+    private String id;
+    private String name;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+
+
+13 step 13) post man query
+1)get method = http://localhost:8080/products
+
+2)post method = http://localhost:8080/products
+{
+  "id":101,
+  "name": "Abhishek Kahar"
+}
+
+3)delete method just Query therse = http://localhost:8080/products/101
+
+4)put method =http://localhost:8080/products/101
+{
+  "name": "Abhishek "
+}
+
+
+
+
+
+
