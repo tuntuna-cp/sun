@@ -39,8 +39,8 @@ public class ProductServiceController {
 
     static {
         Product honey = new Product();
-        honey.setId("80");
-        honey.setName("Ashwini Kurunthazha");
+        honey.setId("111111");
+        honey.setName("Abc Kfc");
         pcontent.put(honey.getId(), honey);
     }
 
@@ -108,14 +108,14 @@ public class Product {
 2)post method = http://localhost:8080/products
 {
   "id":101,
-  "name": "Abhishek Kahar"
+  "name": "Abc Kfc"
 }
 
 3)delete method just Query therse = http://localhost:8080/products/101
 
 4)put method =http://localhost:8080/products/101
 {
-  "name": "Abhishek "
+  "name": "kfc "
 }
 
 
