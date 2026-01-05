@@ -1,0 +1,169 @@
+module 6 ka hai
+
+Q1.Write a program demonstrating how to set up a CRUD (Create, Read, Update, Delete)
+application using Spring Framework and Hibernate ORM with annotations for entity
+mapping and dependency injection.
+
+1 step 1) go on  start.spring.io
+2 step 2) select project > Maven
+3 step 3) select language > Java
+4 step 4) Rest of all jaisa hai waise rhendena 
+5 step 5) Add dependecies 1) Spring Web 2) Spring Data JPA 3) MySQL Driver 
+6 step 6) Click on generate
+7 step 7) Fir vo folder unzip karlena 
+8 step 8) fir vo folder open karlena eclipse mai
+9 step 9) fir vo folder mai folder create krna EmployeeController.
+10 step 10)  fir vo folder ke andar classes banana 
+
+
+
+11 step 11) EmployeeController .java =
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+@RestController
+@RequestMapping("/api/employees")
+public class EmployeeController {
+@Autowired
+private EmployeeService employeeService;
+@PostMapping
+public ResponseEntity<Employee> saveEmployee(@RequestBody Employee employee) {
+return ResponseEntity.ok(employeeService.save(employee));
+}
+@GetMapping("/{id}")
+public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id) {
+Employee employee = employeeService.findById(id);
+if (employee != null) {
+return ResponseEntity.ok(employee);
+} else {
+return ResponseEntity.notFound().build();
+}
+}
+@GetMapping
+public ResponseEntity<List<Employee>> getAllEmployees() {
+return ResponseEntity.ok(employeeService.findAll());
+}
+
+@DeleteMapping("/{id}")
+public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
+employeeService.deleteById(id);
+return ResponseEntity.noContent().build();
+}
+}
+
+
+12 step 12) Employee.java =
+import jakarta.persistence.*;
+@Entity
+@Table(name = "employee")
+public class Employee {
+@Id
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+private Long id;
+@Column(nullable = false)
+private String name;
+private String department;
+private String salary;
+// Getters & Setters
+public Long getId() {
+return id;
+}public void setId(Long id) {
+	this.id = id;
+	}
+	public String getName() {
+	return name;
+	}
+	public void setName(String name) {
+	this.name = name;
+	}
+	public String getDepartment() {
+	return department;
+	}public void setDepartment(String department) {
+		this.department = department;
+	}
+	public String getSalary() {
+	return salary;
+	}
+	public void setSalary(String salary) {
+	this.salary = salary;
+	}
+	}
+
+13 step 13) EmployeeRepository.java =
+import java.util.List;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Repository;
+@Repository
+@Transactional
+public class EmployeeRepository {
+@PersistenceContext
+private EntityManager entityManager;
+public Employee save(Employee employee) {
+if (employee.getId() == null) {
+entityManager.persist(employee);
+} else {
+entityManager.merge(employee);
+}
+return employee;
+}
+public Employee findById(Long id) {
+return entityManager.find(Employee.class, id);
+}
+public List<Employee> findAll() {
+return entityManager
+.createQuery("from Employee", Employee.class)
+.getResultList();
+}
+
+public void deleteById(Long id) {
+Employee employee = findById(id);
+if (employee != null) {
+entityManager.remove(employee);
+}
+}
+}
+
+14 step 14) EmployeeService.java =
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+@Service
+public class EmployeeService {
+@Autowired
+private EmployeeRepository employeeRepository;
+public Employee save(Employee employee) {
+return employeeRepository.save(employee);
+}
+public Employee findById(Long id) {
+return employeeRepository.findById(id);
+}
+public List<Employee> findAll() {
+return employeeRepository.findAll();
+}
+public void deleteById(Long id) {
+employeeRepository.deleteById(id);
+}
+}
+
+15 step 15) Database create karlena college name ka okk in Mysql mai okk
+16 step 16) application .properties = database ke password mai changes krlena okk =
+application .properties
+spring.datasource.url=jdbc:mysql://localhost:3306/college
+spring.datasource.username=root
+spring.datasource.password=root
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.hibernate.ddl-auto=create
+spring.jpa.show-sql=true
+
+17 step 17) Query in database 
+use college;
+SHOW TABLES;
+SELECT * FROM employee;
+
+
+
+
+
