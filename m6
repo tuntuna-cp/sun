@@ -184,7 +184,6 @@ spring.datasource.url=jdbc:mysql://localhost:3306/college
 spring.datasource.username=root
 spring.datasource.password=root
 spring.jpa.hibernate.ddl-auto=update
-spring.jpa.hibernate.ddl-auto=create
 spring.jpa.show-sql=true
 
 17 step 17) Query in database 
@@ -208,7 +207,9 @@ SELECT * FROM employee;
 
 4)put method =http://localhost:8080/api/employees/1
 {
-  "name": "Abdef "
+  "name": "Abdef ",
+ "department": "HR",
+  "salary":"500000"
 }
 
 
