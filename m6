@@ -25,32 +25,46 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/employees")
 public class EmployeeController {
-@Autowired
-private EmployeeService employeeService;
-@PostMapping
-public ResponseEntity<Employee> saveEmployee(@RequestBody Employee employee) {
-return ResponseEntity.ok(employeeService.save(employee));
-}
-@GetMapping("/{id}")
-public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id) {
-Employee employee = employeeService.findById(id);
-if (employee != null) {
-return ResponseEntity.ok(employee);
-} else {
-return ResponseEntity.notFound().build();
-}
-}
-@GetMapping
-public ResponseEntity<List<Employee>> getAllEmployees() {
-return ResponseEntity.ok(employeeService.findAll());
+ @Autowired
+ private EmployeeService employeeService;
+ @PostMapping
+ public ResponseEntity<Employee> saveEmployee(@RequestBody Employee employee) {
+ return ResponseEntity.ok(employeeService.save(employee));
+ }
+ @GetMapping("/{id}")
+ public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id) {
+ Employee employee = employeeService.findById(id);
+ if (employee != null) {
+ return ResponseEntity.ok(employee);
+ } else {
+ return ResponseEntity.notFound().build();
+ }
+ }
+ @PutMapping("/{id}")
+ public ResponseEntity<Employee> updateEmployee(
+         @PathVariable Long id,
+         @RequestBody Employee employee) {
+
+     Employee updatedEmployee = employeeService.updateEmployee(id, employee);
+
+     if (updatedEmployee != null) {
+         return ResponseEntity.ok(updatedEmployee);
+     } else {
+         return ResponseEntity.notFound().build();
+     }
+ }
+
+ @GetMapping
+ public ResponseEntity<List<Employee>> getAllEmployees() {
+ return ResponseEntity.ok(employeeService.findAll());
+ }
+ @DeleteMapping("/{id}")
+ public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
+ employeeService.deleteById(id);
+ return ResponseEntity.noContent().build();
+ }
 }
 
-@DeleteMapping("/{id}")
-public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
-employeeService.deleteById(id);
-return ResponseEntity.noContent().build();
-}
-}
 
 
 12 step 12) Employee.java =
@@ -146,7 +160,22 @@ return employeeRepository.findAll();
 public void deleteById(Long id) {
 employeeRepository.deleteById(id);
 }
+public Employee updateEmployee(Long id, Employee newEmployee) {
+    Employee existingEmployee = employeeRepository.findById(id);
+
+    if (existingEmployee == null) {
+        return null;
+    }
+
+    existingEmployee.setName(newEmployee.getName());
+    existingEmployee.setDepartment(newEmployee.getDepartment());
+    existingEmployee.setSalary(newEmployee.getSalary());
+
+    return employeeRepository.save(existingEmployee);
 }
+
+}
+
 
 15 step 15) Database create karlena college name ka okk in Mysql mai okk
 16 step 16) application .properties = database ke password mai changes krlena okk =
